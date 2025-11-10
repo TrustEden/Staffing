@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Denied</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #FF9800;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+        }
+        .highlight {
+            background-color: #fff;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #FF9800;
+        }
+        .reason-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+        strong {
+            color: #FF9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Claim Status Update</h1>
+    </div>
+    <div class="content">
+        <p>Hello,</p>
+
+        <p>We regret to inform you that your shift claim was not approved:</p>
+
+        <div class="highlight">
+            <p><strong>Shift:</strong> {{ shift_title }}</p>
+            <p><strong>Date:</strong> {{ shift_date }}</p>
+        </div>
+
+        {% if reason %}
+        <div class="reason-box">
+            <p><strong>Reason:</strong></p>
+            <p>{{ reason }}</p>
+        </div>
+        {% endif %}
+
+        <p>Don't be discouraged! There are many other opportunities available on the Healthcare Staffing Bridge platform. Check the shift board for more openings.</p>
+
+        <p>Thank you for your interest!</p>
+    </div>
+    <div class="footer">
+        <p>Healthcare Staffing Bridge - Connecting Healthcare Facilities with Staffing Agencies</p>
+    </div>
+</body>
+</html>

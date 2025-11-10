@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m venv:*)",
+      "Bash(. venv/Scripts/activate)",
+      "Bash(export PYTHONPATH=/d/Connected-main:$PYTHONPATH:*)",
+      "Bash(uvicorn:*)",
+      "Bash(pip install:*)",
+      "Bash(npm install:*)",
+      "Bash(export PYTHONPATH=D:/Connected-main:$PYTHONPATH)",
+      "Bash(. backend/venv/Scripts/activate)",
+      "Bash(python -m uvicorn:*)",
+      "Bash(export DATABASE_URL:*)",
+      "Bash(psql:*)",
+      "Bash(python:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

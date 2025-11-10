@@ -1,0 +1,123 @@
+Healthcare Staffing Bridge - Test Suite Structure
+==================================================
+
+backend/tests/
+│
+├── conftest.py (300 lines)
+│   ├── Database Fixtures
+│   │   ├── test_db() - In-memory SQLite
+│   │   └── client() - FastAPI TestClient
+│   ├── Authentication Fixtures
+│   │   ├── superadmin_token()
+│   │   ├── facility_admin_token()
+│   │   ├── agency_admin_token()
+│   │   └── agency_staff_token()
+│   └── Data Fixtures
+│       ├── Users (superadmin, facility_admin, agency_admin, agency_staff)
+│       ├── Companies (sample_facility, sample_agency)
+│       ├── Relationships (active_relationship)
+│       ├── Shifts (sample_shift)
+│       └── Claims (sample_claim)
+│
+├── test_auth.py (315 lines, 19 tests)
+│   ├── TestAuthToken
+│   │   ├── test_login_success
+│   │   ├── test_login_invalid_username
+│   │   ├── test_login_invalid_password
+│   │   ├── test_login_inactive_user
+│   │   └── test_login_case_insensitive_username
+│   ├── TestAuthRefresh
+│   │   ├── test_refresh_tokens_success
+│   │   ├── test_refresh_with_access_token_fails
+│   │   ├── test_refresh_with_invalid_token
+│   │   └── test_refresh_inactive_user
+│   ├── TestAuthMe
+│   │   ├── test_get_current_user_success
+│   │   ├── test_get_current_user_no_token
+│   │   ├── test_get_current_user_invalid_token
+│   │   └── test_get_current_user_different_roles
+│   ├── TestUserRegistration
+│   │   ├── test_register_user_success
+│   │   ├── test_register_user_duplicate_username
+│   │   ├── test_register_user_short_password
+│   │   └── test_register_user_without_company
+│   └── TestPasswordHashing
+│       ├── test_password_hash_verification
+│       └── test_different_passwords_have_different_hashes
+│
+├── test_shifts.py (550 lines, 25 tests)
+│   ├── TestCreateShift (5 tests)
+│   ├── TestListShifts (4 tests)
+│   ├── TestGetShift (3 tests)
+│   ├── TestUpdateShift (2 tests)
+│   ├── TestCancelShift (2 tests)
+│   └── TestShiftConflictDetection (2 tests)
+│
+├── test_claims.py (544 lines, 22 tests)
+│   ├── TestClaimShift (6 tests)
+│   ├── TestListShiftClaims (3 tests)
+│   ├── TestApproveClaim (4 tests)
+│   ├── TestDenyClaim (5 tests)
+│   └── TestListMyClaims (4 tests)
+│
+├── test_notifications.py (520 lines, 22 tests)
+│   ├── TestListNotifications (4 tests)
+│   ├── TestMarkNotificationRead (4 tests)
+│   ├── TestMarkAllRead (2 tests)
+│   ├── TestNotificationCreationOnEvents (4 tests)
+│   └── TestNotificationService (4 tests)
+│
+└── test_admin.py (619 lines, 31 tests)
+    ├── TestListRelationships (4 tests)
+    ├── TestCreateRelationship (4 tests)
+    ├── TestUpdateRelationship (4 tests)
+    ├── TestDeleteRelationship (3 tests)
+    ├── TestListPendingClaims (4 tests)
+    ├── TestGetCompanyStats (4 tests)
+    ├── TestLockCompany (4 tests)
+    └── TestResetAdminPassword (4 tests)
+
+Test Coverage Map:
+==================
+
+API Endpoints → Test Files
+--------------------------
+/api/auth/*          → test_auth.py
+/api/shifts/*        → test_shifts.py, test_claims.py
+/api/claims/*        → test_claims.py
+/api/notifications/* → test_notifications.py
+/api/admin/*         → test_admin.py
+
+Features → Test Classes
+-----------------------
+Authentication       → TestAuthToken, TestAuthRefresh, TestAuthMe
+User Management      → TestUserRegistration
+Shift CRUD           → TestCreateShift, TestListShifts, TestGetShift, TestUpdateShift
+Shift Cancellation   → TestCancelShift
+Conflict Detection   → TestShiftConflictDetection
+Claim Lifecycle      → TestClaimShift, TestApproveClaim, TestDenyClaim
+Claim Visibility     → TestListShiftClaims, TestListMyClaims
+Notifications        → TestListNotifications, TestMarkNotificationRead, TestMarkAllRead
+Notification Events  → TestNotificationCreationOnEvents
+Admin Operations     → TestListRelationships, TestCreateRelationship, etc.
+Security & Auth      → All test classes (authorization checks in each)
+
+Statistics:
+===========
+Total Tests:         108
+Total Test Files:    5
+Total Lines:         ~2,849
+Avg Tests/File:      21.6
+Test Fixtures:       15+
+Coverage Target:     >80%
+
+Test Execution Order:
+=====================
+pytest collects tests in this order:
+1. test_admin.py (31 tests)
+2. test_auth.py (19 tests)
+3. test_claims.py (22 tests)
+4. test_notifications.py (22 tests)
+5. test_shifts.py (25 tests)
+
+Each test is independent and uses fresh fixtures.
