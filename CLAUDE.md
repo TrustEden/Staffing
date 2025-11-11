@@ -84,8 +84,8 @@ psql healthcare_staffing -f database\seeds.sql
 ```
 
 Seed data creates:
-- Platform admin: `superadmin@example.com` / `ChangeMe123!`
-- Sample facility & agency admins
+- Platform admin: username=`superadmin`, email=`superadmin@example.com`, password=`ChangeMe123!`
+- Sample facility & agency admins (created via `create_superadmin.py` script)
 
 **Create Superadmin:**
 ```bash
@@ -174,8 +174,8 @@ python -m pytest tests\ --cov=backend\app --cov-report=term-missing --cov-report
 
 **Company Types & Roles:**
 - `CompanyType`: `facility` or `agency`
-- `UserRole`: `platform_admin` (no company), `facility_admin`, `facility_staff`, `agency_admin`, `agency_staff`
-- Platform admins manage relationships, facilities manage shifts, agencies claim shifts
+- `UserRole`: `admin` (platform admin, no company), `staff` (facility staff), `agency_admin`, `agency_staff`
+- Platform admins (role=`admin`) manage relationships, facility admins (role=`admin` with facility company) manage shifts, agencies claim shifts
 
 **Claim Lifecycle:**
 - Agency user claims shift → Claim status `pending` → Facility admin approves (status `approved`, auto-denies other claims) or denies (status `denied`)
@@ -224,11 +224,11 @@ python -m pytest tests\ --cov=backend\app --cov-report=term-missing --cov-report
 
 **Role-Based Access Control:**
 - Routes use `get_current_user()` dependency (from `dependencies.py`)
-- Additional role checks in route handlers (e.g., `require_role(UserRole.platform_admin)`)
-- Platform admins: manage relationships, view all companies
-- Facility admins: manage shifts, approve claims for their facility
-- Agency admins: view partnered facilities, manage agency staff
-- Staff: claim shifts, view own claims
+- Additional role checks in route handlers (e.g., `require_role(UserRole.ADMIN)`)
+- Platform admins (role=`admin`, company_id=null): manage relationships, view all companies
+- Facility admins (role=`admin`, company_id=facility): manage shifts, approve claims for their facility
+- Agency admins (role=`agency_admin`): view partnered facilities, manage agency staff
+- Staff (role=`staff` or `agency_staff`): claim shifts, view own claims
 
 ### Testing Architecture
 
